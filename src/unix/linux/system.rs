@@ -290,7 +290,7 @@ impl SystemExt for System {
                     _ => return,
                 };
                 *field = value;
-                self.mem_free = self.mem_free.saturating_sub(value);
+                self.mem_available = self.mem_available.saturating_add(value);
             });
         } else if let (Some(mem_cur), Some(mem_max)) = (
             // cgroups v1
