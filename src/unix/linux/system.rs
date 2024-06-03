@@ -300,6 +300,15 @@ impl SystemExt for System {
             self.mem_total = min(mem_max, self.mem_total);
             self.mem_free = self.mem_total.saturating_sub(mem_cur);
             self.mem_available = self.mem_free;
+
+            read_table("/sys/fs/cgroup/memory/memory.stat", ' ', |key, value| {
+                let field = match key {
+                    "cache" => &mut self.mem_page_cache,
+                    _ => return,
+                };
+                *field = value;
+                self.mem_available = self.mem_available.saturating_add(value);
+            });
         }
     }
 
