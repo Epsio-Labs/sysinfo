@@ -598,13 +598,6 @@ impl crate::CGroupLimits {
         end_path_components.next_back();
         let end_path = end_path_components.as_path();
         while current_path.as_path() != end_path {
-            println!(
-                "Reading from {}",
-                current_path
-                    .as_path()
-                    .join(cgroup_version.max_memory_filename())
-                    .to_str()?
-            );
             if let Some(mem_max) = read_u64(
                 current_path
                     .as_path()
